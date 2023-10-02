@@ -1,0 +1,12 @@
+<div class="filter other-input">
+  <div class="input-icon">
+    <i class="fa-solid fa-book"></i>
+    <label for="suspension_filter">Suspension:</label>
+  </div>
+  <% suspension = params['suspension_filter'] %>
+  <select id="suspension_filter" name="suspension_filter">
+    <option value="" <% if suspension.nil? || suspension.eql?("") %>selected<% end %>></option>
+    <option value="1" <% if suspension.eql?("1") %>selected<% end %>>Suspended</option>
+    <option value="0" <% if suspension.eql?("0") %>selected<% end %>>Unsuspended</option>
+  </select>
+</div>

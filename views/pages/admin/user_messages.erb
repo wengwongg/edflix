@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/style/courses_list.css">
+<div class="courses-page">
+  <section class="courses-section">
+    <div id="section-container">
+
+      <div id="messages-list">
+        <h3>User Messages</h3>
+        <% if !@pagination.paginated_array.empty? %>
+          <table>
+            <tr>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Content</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+            <% @pagination.paginated_array.each do |message| %>
+              <tr>
+                <td style="white-space: nowrap;"><%= h message.email %></td>
+                <td style="white-space: nowrap;"><%= h message.name %></td>
+                <td><%= h message.text %></td>
+                <td style="white-space: nowrap;"><%= h DateParse.parse_unix_to_date(message.date, "%F") %></td>
+                <td>
+                  <form id="delete-message" action="/messages/<%= h message.id %>" method="POST">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="button" value="Delete" onclick="confirmSubmit('delete-message',
+                      'Do you confirm deleting of <%=h message.name %> message?\n' +
+                        'This cannot be undone!')">
+                  </form>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+          <form id="main-form">
+            <%= erb :'components/pagination' %>
+          </form>
+        <% else %>
+          <p>You have no messages.</p>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>

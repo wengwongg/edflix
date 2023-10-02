@@ -1,0 +1,20 @@
+<div class="filter other-input">
+  <div class="input-icon">
+    <i class="fa-solid fa-book"></i>
+    <label for="subject">Subject:</label>
+  </div>
+  <select id="subject" name="subject">
+    <%
+      subjects = Subject.all
+      current_subject = Subject.first(id: params['subject'])
+    %>
+    <% unless current_subject.nil? %>
+      <option value="<%=h current_subject.id %>"><%=h current_subject.name %></option>
+      <% subjects.delete(current_subject) %>
+    <% end %>
+    <option value="all">all</option>
+    <% subjects.each do |subject| %>
+      <option name="<%=h subject.name %>" value="<%=h subject.id %>"><%=h subject.name %></option>
+    <% end %>
+  </select>
+</div>

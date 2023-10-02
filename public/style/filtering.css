@@ -1,0 +1,130 @@
+.filter-form {
+    margin: 2vh 0;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.form-row:first-of-type {
+    justify-content: space-evenly;
+}
+
+.filter {
+    background-color: #f4f4f4;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 0.9em;
+    padding: 2px;
+}
+
+.filter:hover {
+    border-color: #0463BB;
+    transition: 0.2s;
+}
+
+.text-input {
+    height: 30px;
+    flex-basis: 40%;
+    flex-grow: 2;
+}
+
+.input-icon {
+    display: block;
+    margin: auto;
+    white-space: nowrap;
+}
+
+.input-icon label {
+    font-size: 0.9em;
+    margin-left: 3px;
+}
+
+.submit-input {
+    align-self: flex-end;
+    margin: auto;
+    flex-grow: 2;
+    text-align: right;
+}
+
+.submit-input input {
+    height: 25px;
+    width: 30%;
+    max-width: 100px;
+    min-width: 70px;
+}
+
+.submit-input input[type=submit] {
+    background-color: #0573DA;
+    font-size: 14px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.submit-input input[type=reset] {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.submit-input input[type=submit]:hover {
+    background-color: #0463BB;
+    transition: 0.2s;
+}
+
+.submit-input input[type=reset]:hover {
+    border-color: #0463BB;
+    transition: 0.2s;
+}
+
+.text-input input {
+    border: 0;
+    width: 90%;
+}
+
+.other-input {
+    height: 40px;
+    gap: 1vw;
+    padding: 0 1vw;
+    justify-content: flex-start;
+}
+
+.other-input input,select {
+    margin: auto;
+    /*padding: 2px;*/
+    height: 70%;
+    width: min-content;
+}
+
+.filter-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+#start-date {
+    padding: 15px;
+}
+
+@media all and (max-width: 650px) {
+    .form-row {
+        flex-direction: column;
+    }
+
+    .submit-input input {
+        min-width: 20vw;
+    }
+
+    .filter {
+        flex-grow: 2;
+        align-self: stretch;
+    }
+
+    .text-input {
+        flex-basis: 90%;
+        align-self: stretch;
+    }
+}

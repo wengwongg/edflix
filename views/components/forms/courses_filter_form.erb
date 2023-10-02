@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="/style/filtering.css">
+<div id="filter-list">
+  <h3  class="filter-title">Filters</h3>
+  <div class="filter-form">
+    <%= erb :'components/filter_inputs/course_name' if @enabled_filters[:course_name] %>
+    <%= erb :'components/filter_inputs/lecturer' if @enabled_filters[:lecturer] %>
+    <%= erb :'components/filter_inputs/user_email' if @enabled_filters[:user_email] %>
+    <%= erb :'components/filter_inputs/subject' if @enabled_filters[:subject] %>
+    <%= erb :'components/filter_inputs/providers' if @enabled_filters[:providers] %>
+    <%= erb :'components/filter_inputs/course_status' if @enabled_filters[:course_status] %>
+    <%= erb :'components/filter_inputs/start_date' if @enabled_filters[:start_date] %>
+    <%= erb :'components/filter_inputs/end_date' if @enabled_filters[:end_date] %>
+    <%= erb :'components/filter_inputs/enroll_date' if @enabled_filters[:enroll_date] %>
+    <%= erb :'components/filter_inputs/pause_date' if @enabled_filters[:pause_date] %>
+    <%= erb :'components/filter_inputs/finish_date' if @enabled_filters[:finish_date] %>
+    <%= erb :'components/filter_inputs/course_tag' if @enabled_filters[:course_tag] %>
+    <%= erb :'components/filter_inputs/suspension' if @enabled_filters[:suspension] %>
+
+    <div class="submit-input">
+      <input type="reset" value="Clear" onclick="clearAllInputs('main-form')">
+      <input type="submit" name="filter" value="Filter">
+    </div>
+  </div>
+</div>

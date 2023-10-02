@@ -1,0 +1,36 @@
+
+  <% if @logged_user.permission?(create_perm) %>
+    <h5>Create</h5>
+    <form id="<%= h object_name %>-create" action="<%= h request.path_info %>/<%= h object_name %>" method="post">
+      <input type="text" name="name" placeholder="Type name of <%= h name_displayed %>">
+      <input type="submit" name="<%= h object_name %>-create" value="Create">
+    </form>
+  <% end %>
+
+  <% if @logged_user && @logged_user.permission?(edit_perm) %>
+    <h5>Edit</h5>
+    <div>
+      <form id="<%= h object_name %>-edit" action="<%= h request.path_info %>/<%= h object_name %>" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <select id="<%= h object_name %>" name="<%= h object_name %>"
+                onchange="setGivenInputValue('<%=h object_name %>-delete-input', getValue('<%=h object_name %>'))">
+          <option value="" disabled selected>Select <%= h name_displayed %></option>
+          <% objects_list&.each do |element| %>
+            <% next if element.name.nil? %>
+            <option name="<%= h object_name %>-<%= h element.id %>" value="<%= h element.id %>"><%= h element.name %></option>
+          <% end %>
+        </select>
+        <input type="text" name="name" placeholder="Type name of <%= h name_displayed %>">
+        <input type="submit" name="<%= h object_name %>-edit" value="Save">
+        <% if @logged_user.permission?(delete_perm) %>
+          <input type="button" name="<%= h object_name %>-delete" value="Delete"
+                 onclick="confirmSubmit('<%=h object_name %>-delete', '<%=h delete_message %>')">
+        <% end %>
+      </form>
+      <form id="<%= h object_name %>-delete" action="<%= h request.path_info %>/<%= h object_name %>" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <input id="<%= h object_name %>-delete-input" type="hidden" name="<%= h object_name %>" value="">
+      </form>
+    </div>
+
+  <% end %>

@@ -1,0 +1,10 @@
+<div class="filter other-input">
+  <div class="input-icon">
+    <i class="fa-sharp fa-solid fa-calendar-days"></i>
+    <label for="end_date">End date:</label>
+  </div>
+  <input id="end_date" type="date" name="end_date" min="2000-01-01" max="2049-12-31" value="<%=h params['end_date'] %>">
+  <div class="input-icon"><label for="end_date_exact">Exact?</label></div>
+  <input id="end_date_exact" type="checkbox" name="end_date_exact"
+         <% unless params['end_date_exact'].nil? %><%=h "checked" %><% end %>>
+</div>

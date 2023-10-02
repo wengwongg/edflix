@@ -1,0 +1,35 @@
+<section class="page-section">
+  <h2>List of User Suggested Courses</h2>  
+
+  <% if !@user_suggested_courses.empty? %>
+
+    <form id="main-form"></form>
+    <table>
+      <tr>
+        <th>User ID</th>
+        <th>Course Name</th>
+        <th>Course URL</th>
+        <th>Delete?</th>
+      </tr>
+      
+      <% @user_suggested_courses.each do |user_suggested_course| %>
+        <tr>
+          <td><%= user_suggested_course.user_id %></td>
+          <td><%= user_suggested_course.name %></td>
+          <td><%= user_suggested_course.url %></td>
+          <td>
+            <form method="post" action="/delete-suggested-course">
+              <input type="hidden" name="id" value="<%= user_suggested_course.id %>">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+    <%= erb :'components/pagination' %>
+
+  <% else %>
+    <p>No courses have been suggested</p>
+  <% end %>
+</section>

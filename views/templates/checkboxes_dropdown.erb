@@ -1,0 +1,17 @@
+<div class="checkboxes-dropdown">
+  <button id="<%= h param_name %>-label" type="button" class="checkboxes-label" onclick="toggleCheckboxes('<%=h param_name %>')">
+    <span>Select <%= h label %></span>
+    <i class="fa-solid fa-chevron-left fa-xs"></i>
+  </button>
+  <ul id="<%= h param_name %>" class="checkboxes-list">
+    <% list.each do |element| %>
+      <li class="checkbox">
+        <!-- name should be course_tags or subjects etc., so we need to pass param_name too -->
+        <input id="<%= h param_name %>-<%= h element.id %>" type="checkbox" name="<%= h param_name %>[]" value="<%= h element.id %>"
+               <% if !params.nil? && checked_checkboxes&.include?(element.id.to_s) %>checked
+               <% end %>>
+        <label for="<%= h param_name %>-<%= h element.id %>"><%= h element.name %></label>
+      </li>
+    <% end %>
+  </ul>
+</div>

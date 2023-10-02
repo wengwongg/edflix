@@ -1,0 +1,31 @@
+<section class="page-section">
+		<h1 class="page-title">Register</h1>
+		<div class="page-inner-section">
+			<form class="general-form" method="post" action="/register">
+				<label class="form-field" for="email">
+					<b class="form-field-label">Email</b>
+					<input id="email" class="form-input" type="email" name="email" required>
+				</label>
+				<label class="form-field" for="password">
+					<b class="form-field-label">Password</b>
+					<input id="password" class="form-input" type="password" name="password" required>
+				</label>
+				<label class="form-field" for="confirm_password">
+					<b class="form-field-label">Confirm Password</b>
+					<input id="confirm_password" class="form-input" type="password" name="confirm_password" required>
+				</label>
+
+				<a class="login-redirect-link" href="/login">Already have an account?</a>
+
+				<div class="form-submit-section">
+					<button class="form-submit-btn" type="submit" name="register">Register</button>
+				</div>
+			</form>
+			<% unless @email_error.nil? %>
+			<br/><strong class="error"><%= h @email_error %></strong>
+			<%  end %>
+			<% unless @password_error.nil? %>
+			<br/><strong class="error"><%= h @password_error %></strong>
+			<%  end %>
+		</div>
+</section>

@@ -1,0 +1,95 @@
+<div id="reviews">
+  <h4>Reviews</h4>
+  <% if @pagination && !@pagination.all_elements.empty? %>
+    <ul class="reviews-list">
+      <% @pagination.paginated_array.each do |review| %>
+        <li class="review">
+          <div class="review-stars">
+            <%
+              user_stars = if review
+                             review.rating
+                           else
+                             0
+                           end
+
+              (0..user_stars).each do |i|
+                next if i.eql?(0)
+            %>
+              <i class="fa-solid fa-star checked"></i>
+            <%
+              end
+              (user_stars+1..5).each do |i|
+            %>
+              <i class="fa-solid fa-star"></i>
+            <% end %>
+          </div>
+          <div class="review-date"><%=h DateParse.parse_unix_to_date(review.creation_date, "%-d %B %Y") %></div>
+          <%
+            user_info = User_info.first(user_id: review.user_id)
+            author_name = if user_info&.first_name.nil?
+                            "Anonymous"
+                          else
+                            user_info.first_name
+                          end
+          %>
+          <div class="review-author"><%=h author_name %></div>
+          <div class="review-content"><%=h review.content %></div>
+        </li>
+      <% end %>
+    </ul>
+
+    <form id="main-form" action="<%=h request.path_info %>" method="GET">
+      <%= erb :'components/pagination' %>
+    </form>
+  <% else %>
+    <p>The are no reviews for this course.</p>
+  <% end %>
+</div>
+
+<% if @logged_user && @logged_user.permission?("reviews.add") %>
+  <div id="student-review">
+    <!-- Adding/editing logged user's review -->
+    <h4><% if @review %>Edit your<% else %>Add<% end %> review</h4>
+    <form action="<%=h request.path_info %>/review" method="POST">
+      <div class="text-input">
+        <div class="input-icon">
+          <%
+            user_stars = if @review
+                           @review.rating
+                         else
+                           0
+                         end
+
+            (0..user_stars).each do |i|
+              next if i.eql?(0)
+          %>
+            <div class="radio-star">
+              <i id="review-star-<%=h i %>" class="fa-solid fa-star checked"></i>
+              <input type="radio" name="review_stars" value="<%=h i %>" onclick="setStars(<%=h i %>)"
+              <% if i.eql?(user_stars) %>checked<% end %>>
+            </div>
+          <%
+            end
+            (user_stars+1..5).each do |i|
+          %>
+            <div class="radio-star">
+              <i id="review-star-<%=h i %>" class="fa-solid fa-star"></i>
+              <input type="radio" name="review_stars" value="<%=h i %>" onclick="setStars(<%=h i %>)">
+            </div>
+          <% end %>
+        </div>
+        <textarea id="user-review" name="review_content"
+                  placeholder="Type your review"><% if @review %><%=h @review.content %><% end %></textarea><br>
+      </div>
+      <input class="marked-btn" type="submit" name="review-submit" value="Save">
+    </form>
+
+    <!-- Deleting review if user created one -->
+    <% if @review %>
+      <form action="<%=h request.path_info %>/review" method="post">
+        <input name="_method" type="hidden" value="delete">
+        <input class="marked-btn" type="submit" name="review-delete" value="Delete">
+      </form>
+    <% end %>
+  </div>
+<% end %>

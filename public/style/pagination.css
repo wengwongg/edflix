@@ -1,0 +1,46 @@
+div.pagination {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    justify-content: center;
+}
+
+div.pagination-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    flex-grow: 3;
+    flex-basis: 70%;
+    font-size: 1.1em;
+}
+
+.pagination-links div {
+    padding: 0 8px;
+}
+
+.pagination-links a {
+    text-decoration: none;
+    color: black;
+}
+
+.pagination-links a:hover {
+    color: #0463BB;
+    text-decoration: underline;
+}
+
+#current-page {
+    color: #0573DA;
+    text-decoration: underline;
+}
+
+#current-page:hover {
+    color: #0463BB;
+}
+
+div.pagination-size {
+    height: 30px;
+}

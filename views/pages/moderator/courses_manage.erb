@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="/style/course_details.css">
+<div class="courses-page">
+  <section class="courses-section">
+  <h2>Manage course properties</h2>
+  <div class="flex-container">
+    <div id="left-container">
+      <% if @logged_user && (@logged_user.permission?("subjects.create") || @logged_user.permission?("subjects.edit")) %>
+        <div id="subjects-manage">
+          <h3>Subjects</h3>
+          <%= erb :'/components/forms/courses_manage_form',
+                  :locals => { :object_name => "subject",
+                               :name_displayed => "subject",
+                               :objects_list => Subject.all,
+                               :create_perm => "subjects.create",
+                               :edit_perm => "subjects.edit",
+                               :delete_perm => "subjects.delete",
+                               :delete_message => "Do you want to delete subject? It will cause all courses associated" +
+                                 "with this subject not have subject anymore" } %>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="right-container">
+      <% if @logged_user && (@logged_user.permission?("tags.category.create") || @logged_user.permission?("tags.category.edit")) %>
+        <div id="tags-category-manage">
+          <h3>Tag categories/types</h3>
+          <%= erb :'/components/forms/courses_manage_form',
+                  :locals => { :object_name => "tags-category",
+                               :name_displayed => "tag category",
+                               :objects_list => TagCategory.all,
+                               :create_perm => "tags.category.create",
+                               :edit_perm => "tags.category.edit",
+                               :delete_perm => "tags.category.delete",
+                               :delete_message => "Do you want to delete tag category? It will cause all tags associated" +
+                                 "with this category to disappear. It cannot be undone!" } %>
+        </div>
+      <% end %>
+    </div>
+
+
+  </div>
+
+  <h2>Manage course tags</h2>
+  <div class="flex-container">
+    <% if @logged_user && (@logged_user.permission?("tags.create") || @logged_user.permission?("tags.edit")) %>
+      <% CourseTag.all_tags_hash&.each do |type, tags| %>
+        <div id="tags-<%=h type %>-manage">
+          <h3><%=h type.capitalize %></h3>
+          <%= erb :'/components/forms/courses_manage_form',
+                  :locals => { :object_name => "tag-" + type,
+                               :name_displayed => type + " tag",
+                               :objects_list => tags,
+                               :create_perm => "tags.create",
+                               :edit_perm => "tags.edit",
+                               :delete_perm => "tags.delete",
+                               :delete_message => "Do you want to delete this tag? It will cause all courses associated" +
+                                 "with this tag have this tag removed. It cannot be undone!" } %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</section>
+</div>

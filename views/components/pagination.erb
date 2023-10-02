@@ -1,0 +1,42 @@
+<% unless @pagination.nil? && !@pagination.is_a?(PaginatedArray) %>
+  <link rel="stylesheet" href="/style/pagination.css">
+  <div class="pagination">
+
+    <div class="pagination-links">
+      <% unless @pagination.first_displayed.eql?(@pagination.last_displayed) %>
+        <input id="page-no" type="hidden" name="page" value="<%=h @pagination.current_page %>" form="main-form">
+        <% unless @pagination.current_page.eql?(1) %>
+          <div><a href="#" onclick="setPage(1)"><i class="fa-solid fa-angles-left"></i></a></div>
+          <div><a href="#" onclick="setPage(<%=h @pagination.current_page - 1 %>)"><i class="fa-solid fa-angle-left"></i></a></div>
+        <% end %>
+
+        <% (@pagination.first_displayed...@pagination.current_page).each do |i| %>
+          <div><a href="#" onclick="setPage(<%=h i %>)"><%= h i  %></a></div>
+        <%  end %>
+        <div><a id="current-page" href="#" onclick="setPage(<%=h @pagination.current_page %>)"><%=h @pagination.current_page %></a></div>
+        <% (@pagination.current_page + 1..@pagination.last_displayed).each do |i| %>
+          <div><a href="#" onclick="setPage(<%=h i %>)"><%= h i  %></a></div>
+        <%  end %>
+
+        <% unless @pagination.current_page.eql?(@pagination.last_page) %>
+          <div><a href="#" onclick="setPage(<%=h @pagination.current_page + 1 %>)"><i class="fa-solid fa-angle-right"></i></a></div>
+          <div><a href="#" onclick="setPage(<%=h @pagination.last_page %>)"><i class="fa-solid fa-angles-right"></i></a></div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if @disable_pagination_size.nil? %>
+      <div class="pagination-size">
+        <label for="page-size">Elements on page:</label>
+        <select name="page_size" id="page-size" onchange="refreshPage('main-form')" form="main-form">
+          <% all_elements = [5, 10, 25, 50, 75, 100] %>
+          <% all_elements.each do |option| %>
+            <option value="<%=h option %>"
+              <% if option.eql?(@pagination.elements_per_page) %>selected<% end %>><%=h option %></option>
+          <% end %>
+        </select>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>

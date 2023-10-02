@@ -1,0 +1,76 @@
+<section class="page-section">
+
+  <h2>Add Filter Settings</h2>
+
+  <form id="main-form" action="<%= h request.path_info %>" method="GET">
+    <%= erb :'components/forms/courses_filter_form' %>
+  </form>
+
+  <% if !@users.empty? %>
+    <table>
+      <caption><h2>List of All Users</h2></caption>
+
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Year of Study</th>
+        <th>Main Role</th>
+        <th>Staff</th>
+        <th>Subject</th>
+        <th>Suspension</th>
+        <th>Edit?</th>
+      <tr>
+
+      <% @users.each do |user| %>
+        <tr>
+            <td><%= h user.id %></td>
+            <td><%= h user.email %></td>
+
+            <td><%= h user.get_user_info(user.id)[0] %></td>
+
+            <td><%= h user.get_user_info(user.id)[1] %></td>
+
+            <td><%= h user.get_user_info(user.id)[3] %></td>
+
+            <td><%= h user.user_roles[-1].name.capitalize if user.fetch_permissions %></td>
+
+            <td>
+              <% if user.is_staff == 0 %>
+                false
+              <% else %>
+                true
+              <% end %>
+            </td>
+
+            <td><%= h @subject.convert_subject_id(user.get_user_info(user.id)[2]) %></td>
+
+            <td>
+              <% if user.is_staff == 0 %>
+                <form method="post" action="/user-suspension">
+                  <input type="hidden" name="id" value="<%= user.id %>">
+
+                  <% if user.is_suspended == 0 %>
+                    <input type="hidden" name="suspend" value="1">
+                    <input name="suspend_button_<%= user.id %>" type="submit" value="Suspend">
+                  <% elsif user.is_suspended == 1 %>
+                      <input type="hidden" name="unsuspend" value="0">
+                    <input name="unsuspend_button_<%= user.id %>" type="submit" value="Unsuspend">
+                  <% end %>
+                </form>
+              <% else %>
+                -
+              <% end %>
+            </td>
+
+            <td><a id="edit_<%= user.id %>" href="/edit-user?id=<%= h user.id %>">Edit</a></td>
+        </tr>
+      <% end %>
+    </table>
+    <%= erb :'components/pagination' %>
+  <% else %>
+    <p><b>Attempted to generate user list</b> but no records were found</p>
+  <% end %>
+
+</section>

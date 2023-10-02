@@ -1,0 +1,23 @@
+<section class="page-section">
+
+  <h1 class="page-title">Add a new course</h1>
+  <div class="page-inner-section">
+
+    <% unless @course.errors.size.zero? %>
+        <p><strong class="error">Please correct the errors below:</strong></p>
+    <% end %>
+
+    <form class="general-form" method="post" action="/add-course" >
+    <%= erb :"components/forms/course_form" %>
+      <div class="form-submit-section">
+        <a href="/courses"><button class="form-submit-btn" type="button">Cancel</button></a>
+      </div>
+    </form>
+  </div>
+</section>
+
+ 
+
+
+
+

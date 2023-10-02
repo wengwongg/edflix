@@ -1,0 +1,89 @@
+<header class="nav-header">
+  <a id="menu-button" onclick="openMenu()"><i class="fa-solid fa-bars fa-xl"></i></a>
+  <nav id="menu" class="top-nav">
+    <div id="logo"><img class="logo-img" src="/images/Edflix-logos/Edflix-logo.png" alt="Edflix logo"></div>
+    <ul class="navbar">
+      <li><a class="nav-link" href="/">Home</a></li>
+      <li><a class="nav-link" href="/courses">Courses</a></li>
+      <li><a class="nav-link" href="/staff-contact">Contact Us</a></li>
+      <% if @logged_user %>
+        <% if @logged_user.student? %>
+          <li><a class="nav-link" href="#" onclick="openSubMenu('student-menu')">Student<i id="student-menu-btn"  class="fa-solid fa-chevron-left"></i></a>
+            <ul id="student-menu" class="sub-navbar">
+              <li><a href="/student-dashboard">Dashboard</a></li>
+              <li><a href="/mycourses">My Courses</a></li>
+              <% if @logged_user.permission?("courses.suggest") %>
+                <li><a href="/suggest-course">Suggest courses</a></li>
+              <% end %>
+              <li><a href="/liked-courses">Liked Courses</a></li>
+            </ul>
+          </li>
+        <% end %>
+
+        <% if @logged_user.permission?("courses.manage.access") %>
+          <li><a class="nav-link" href="#" onclick="openSubMenu('moderator-menu')">Moderator<i id="moderator-menu-btn" class="fa-solid fa-chevron-left"></i></a>
+            <ul id="moderator-menu" class="sub-navbar">
+              <li><a href="/courses-manage">Course properties</a></li>
+              <li><a href="/user-suggested-courses">Manage course suggestions</a></li>
+            </ul>
+          </li>
+        <% end %>
+
+        <% if @logged_user.manager? %>
+        <li><a class="nav-link" href="#" onclick="openSubMenu('manager-menu')">Manager<i id="manager-menu-btn" class="fa-solid fa-chevron-left"></i></a>
+          <ul id="manager-menu" class="sub-navbar">
+            <li><a href="/report">Reports</a></li>
+          </ul>
+        </li>
+        <% end %>
+
+        <% if @logged_user.admin? %>
+        <li><a class="nav-link" href="#" onclick="openSubMenu('admin-menu')">Admin<i id="admin-menu-btn" class="fa-solid fa-chevron-left"></i></a>
+          <ul id="admin-menu" class="sub-navbar">
+            <li><a href="/user-list">Users</a></li>
+            <% if @logged_user.permission?("providers.manage.access") %>
+              <li><a href="/providers-manage">Providers</a></li>
+            <% end %>
+            <% if @logged_user.permission?("messages.manage.access") %>
+              <li><a href="/messages">User messages</a></li>
+            <% end %>
+          </ul>
+        </li>
+        <% end %>
+      <% end %>
+
+      <li><a class="nav-link" href="#" onclick="openSubMenu('account-menu')">Account<i id="account-menu-btn" class="fa-solid fa-chevron-left"></i></a>
+        <ul id="account-menu" class="sub-navbar">
+          <% if @logged_user %>
+            <li><a href="/account-details">My Account</a></li>
+            <li><a href="/logout">Sign out</a></li>
+          <% else %>
+            <li><a href="/login">Log in</a>
+            <li><a href="/register">Sign up</a></li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
+<script>
+    function openMenu(){
+        if(document.getElementById("menu").classList.contains('active')){
+            document.getElementById("menu").classList.remove('active');
+        } else {
+            document.getElementById("menu").classList.add('active');
+        }
+    }
+
+    function openSubMenu(menuName){
+        let element = document.getElementById(menuName);
+        let button = document.getElementById(menuName + "-btn")
+        if(element.classList.contains('active')){
+            button.classList.remove('active');
+            element.classList.remove('active');
+        } else {
+            button.classList.add('active');
+            element.classList.add('active');
+        }
+    }
+</script>

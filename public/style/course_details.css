@@ -1,0 +1,245 @@
+h3 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+table.course-details {
+    margin: 20px 0;
+    display: block;
+    width: auto;
+    text-align: left;
+}
+
+.course-details th {
+    background-color: unset;
+}
+
+table.course-details th, table.course-details td {
+    border: none;
+    vertical-align: top;
+    color: black;
+    padding: 5px 3% 5px 0;
+}
+
+.date {
+    white-space: nowrap;
+}
+
+.course-details tr {
+    background-color: unset;
+}
+
+.course-details tr:nth-child(even){
+    background-color: unset;
+}
+
+table.course-details tr th:nth-child(1), table.course-details tr td:nth-child(1) {
+    padding-left: 0;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.flex-container div {
+    display: block;
+    flex-grow: 2;
+    flex-basis: 35%;
+}
+
+ul.reviews-list {
+    padding: 0;
+}
+
+.review {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 5px;
+    padding: 10px 0;
+}
+
+.review div {
+    flex-grow: unset;
+    white-space: nowrap;
+    flex-basis: 130px;
+}
+
+div.review-date {
+    text-align: right;
+    flex-basis: 70%;
+    flex-grow: 4;
+}
+
+div.review-content {
+    font-size: 0.9em;
+}
+
+div.review-author, div.review-content  {
+    white-space: unset;
+}
+
+div.review-content {
+    flex-grow: 2;
+    flex-basis: 30%;
+    text-align: justify;
+}
+
+h4 {
+    /*margin: auto;*/
+    text-align: center;
+}
+
+div.text-input {
+    background-color: #d7d7d7;
+    border: 2px solid rgba(142, 142, 142, 0.98);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 0.9em;
+    height: 70px;
+    flex-basis: 20%;
+    flex-grow: 3;
+}
+
+.text-input textarea {
+    border: 0;
+    height: auto;
+    outline: none;
+    color: #000000;
+    resize: none;
+    background-color: #d7d7d7;
+    flex-grow: 4;
+    padding: 5px 1px;
+}
+
+.text-input textarea::placeholder {
+    color: #959595;
+}
+
+div.input-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: auto 10px;
+    white-space: nowrap;
+    flex-grow: unset;
+    flex-basis: auto;
+}
+
+.input-icon label {
+    /*margin: auto;*/
+    font-size: 0.9em;
+    margin-left: 3px;
+}
+
+div.radio-star {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.radio-star i, input {
+    margin: auto;
+    padding: 5px 3px;
+}
+
+.radio-star i {
+    color: rgba(142, 142, 142, 0.98);
+}
+
+.review-stars {
+    color: rgba(142, 142, 142, 0.98);
+}
+
+.checked {
+    color: gold!important;
+}
+
+div.course-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+
+.course-actions a {
+    display: block;
+    min-width: 70px;
+    padding: 15px;
+    transition: all 0.5s ease;
+}
+
+.course-actions a:hover {
+    transition: all 0.5s ease;
+}
+
+.action-btn {
+    /*border-color: #005d1c;*/
+    background-color: #0573DA;
+}
+
+.action-btn:hover {
+    background-color: #0463BB;
+}
+
+#action-btn-2 {
+    border-color: #2b35d8;
+    background-color: #333cff;
+}
+
+#action-btn-2:hover {
+    background-color: #2329ca;
+}
+
+#action-btn-3 {
+    border-color: #671e1e;
+    background-color: #8a2b2f;
+}
+
+#action-btn-3:hover {
+    background-color: #5d1c1d;
+}
+
+div.pagination-links {
+    flex-grow: unset!important;
+    font-size: 0.8em!important;
+    flex-basis: 50%!important;
+}
+
+@media all and (max-width: 800px) {
+    .flex-container {
+        flex-direction: column;
+    }
+}
+
+@media all and (max-width: 460px) {
+    .review {
+        flex-direction: column;
+        align-content: stretch;
+        text-align: center;
+    }
+
+    .review div {
+        flex-basis: unset;
+    }
+
+    div.review-date {
+        text-align: center;
+        flex-basis: unset;
+    }
+
+    div.review-content {
+        flex-basis: unset;
+    }
+}

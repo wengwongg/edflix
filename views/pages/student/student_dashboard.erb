@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="/style/courses_list.css">
+<link rel="stylesheet" href="/style/course_details.css">
+<div class="courses-page">
+  <section class="courses-section">
+  <h3>Student Dashboard</h3>
+  <div class="flex-container">
+    <div id="left-container">
+      <div id="details">
+        <h4>Your stats</h4>
+        <table class="course-details">
+          <tr><th>Subject</th><td><% if @student_subject %><%=h @student_subject.name %><% else %>None<% end %></td></tr>
+          <% most_frequent_tag = CourseTag.first(id: @student_stats.fetch(0, nil)&.id)&.name %>
+          <tr><th>Most frequent tag</th><td><% if most_frequent_tag %><%=h most_frequent_tag %><% else %>None<% end %></td></tr>
+          <% completed_courses_count = StudentStats.count_completed_courses(@student_courses) %>
+          <tr><th>Completed courses</th><td><%=h completed_courses_count %></td></tr>
+          <% current_courses_count = StudentStats.count_enrolled_courses(completed_courses_count, @student_courses) %>
+          <tr><th>Current courses</th><td><%=h current_courses_count %></td></tr>
+          <tr><th>Total sign ups</th><td><%=h @student_courses.length %></td></tr>
+          <tr><th>Total reviews</th><td class="date"><%=h StudentStats.total_reviews(@logged_user.id) %></td></tr>
+        </table>
+      </div>
+
+      <div id="suggested-pathway">
+        <h4>Pathway for chosen tag</h4>
+        <form id="pathway-form" action="<%=h request.path_info %>" method="get">
+          <label for="pathway-tag-type">Choose type of tag</label>
+          <select id="pathway-tag-type" name="pathway_tag_type" onchange="chooseTagType(getValue('pathway-tag-type'))">
+            <option value="" selected disabled>Select tag type</option>
+            <% TagCategory.all.each do |category| %>
+              <option class="tag-category" value="<%=h category.id %>"
+              <% if category.id.eql?(params['pathway_tag_type']) %>selected<% end %>><%=h category.name %></option>
+            <% end %>
+          </select>
+
+          <label for="pathway-input">Choose tag</label>
+          <select id="pathway-input" name="pathway_tag">
+            <option value="" selected disabled>Select tag</option>
+            <%
+              CourseTag.all.each do |tag|
+                next if tag.name.nil?
+            %>
+              <option class="tag-type-<%=h tag.type %> <% unless tag.type.eql?(params['pathway_tag_type']) %>hidden<% end %>"
+                      value="<%=h tag.id %>"
+              <% if tag.id.to_s.eql?(params['pathway_tag']) %>selected<% end %>><%=h tag.name %></option>
+            <% end %>
+          </select>
+          <input type="submit" value="Load">
+          <input type="button" value="Reset" onclick="clearAllInputs('pathway-form')">
+        </form>
+        <% unless @current_tag.nil? %>
+          <%= erb :'components/suggested_courses',
+                  :locals => { :section_name => "pathway-courses", :displayed_name => "Pathway for " + @current_tag.name,
+                               :courses_list => SuggestedCourses.get(@logged_user.id, 5, @current_tag.id).fetch_list } %>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="right-container">
+      <%= erb :'components/suggested_courses',
+              :locals => { :section_name => "suggested-courses", :displayed_name => "Suggested for you",
+                           :courses_list => @suggested_courses.fetch_list } %>
+
+      <%= erb :'components/suggested_courses',
+              :locals => { :section_name => "trending-courses", :displayed_name => "Trending",
+                           :courses_list => Course.get_trending_courses(5) } %>
+
+      <%= erb :'components/suggested_courses',
+              :locals => { :section_name => "popular-courses", :displayed_name => "Most popular",
+                           :courses_list => Course.get_popular_courses(5) } %>
+    </div>
+  </div>
+
+  <script>
+    function chooseTagType(type) {
+        let allTagsOptions = document.querySelectorAll('[class^="tag-type-"]')
+        allTagsOptions.forEach(function(tag) {
+            if(tag.classList.contains("tag-type-" + type.toString())){
+                tag.classList.remove("hidden");
+            } else {
+                tag.classList.add("hidden");
+            }
+        });
+        document.getElementById("pathway-input").value = "";
+    }
+  </script>
+</section>
+</div>

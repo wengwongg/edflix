@@ -1,0 +1,31 @@
+<section class="page-section">
+  <h1 class="page-title">Edit course</h1>
+  <div class="page-inner-section">
+  <form method="post">
+    <input type="hidden" name="id" value="<%= @course.id %>"/>
+    <%= erb :"components/forms/course_form" %>
+  </form>
+
+  <div class="warning">
+
+    <% if @course.archived? %>
+      <form class="form-submit-section" id="restore-course" action="/courses/<%= h @course.id %>/restore" method="POST">
+        <input class="form-submit-btn" type="button" value="Restore" onclick="confirmSubmit('restore-course',
+          'Do you confirm restoring <%=h @course.name %> course?\n' +
+            'Course will become accessible for students!')">
+      </form>
+    <% else %>
+      <form class="form-submit-section" id="archive-course" action="/courses/<%= h @course.id %>" method="POST">
+        <input type="hidden" name="_method" value="DELETE"/>
+        <input class="form-submit-btn" type="button" value="Archive" onclick="confirmSubmit('archive-course',
+          'Do you confirm archiving of <%=h @course.name %> course?\n' +
+            'Course will become inaccessible for students!')">
+      </form>
+    <% end %>
+
+    <div class="form-submit-section">
+      <a href="/courses"><button class="form-submit-btn" type="button">Cancel</button></a>
+    </div>
+  </div>
+  </div>
+</section>

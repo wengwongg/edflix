@@ -1,0 +1,175 @@
+<label class="form-field" for="name">
+  <b class="form-field-label">Course Name</b>
+  <input class="form-input" id="name" type="text" name="name" value="<%= h @course.name %>">
+  <% if @course.errors.include?("name") %>
+    <% @course.errors["name"].each do |error| %>
+      <p class="error"><strong>Course name <%= h error %></strong></p>
+    <% end %>
+  <% end %></label>
+
+<label class="form-field" for="subject">
+  <b class="form-field-label">Subject</b>
+  <select class="form-input" id="subject" name="subject">
+    <% @current_subject = Subject.first(id: @course.subject) %>
+    <% if @current_subject.nil? %>
+      <option name="" value=""></option>
+    <% else %>
+      <option name="<%= h @current_subject.name %>" value="<%= h @current_subject.id %>"><%= h @current_subject.name %></option>
+    <% end %>
+
+    <%
+      @subjects = Subject.all
+      @subjects.delete(@current_subject) unless @current_subject.nil?
+      unless @subjects.nil?
+        @subjects.each do |subject| %>
+        <option name="<%= h subject.name %>" value="<%= h subject.id %>"><%= h subject.name %></option>
+      <% end
+         end %>
+  </select>
+  <% if @course.errors.include?("subject") %>
+    <% @course.errors["subject"].each do |error| %>
+      <p class="error"><strong>Subject <%= h error %></strong></p>
+    <% end %>
+  <% end %>
+</label>
+
+<% user_providers = @logged_user.providers %>
+<% if user_providers %>
+  <% if user_providers.length > 1 %>
+  <label class="form-field" for="provider">
+    <b class="form-field-label">Provider name</b>
+    <select class="form-input" id="provider" name="provider">
+      <% user_providers.each do |provider| %>
+        <option value="<%=h provider.id %>"><%=h provider.name %></option>
+      <% end %>
+    </select>
+  </label>
+  <% else %>
+    <input type="hidden" name="provider" value="<%=h user_providers.fetch(0, nil)&.id %>">
+  <% end %>
+<% end %>
+<% if @course.errors.include?("provider") %>
+  <% @course.errors["provider"].each do |error| %>
+    <p class="error"><strong><%=h error %></strong></p>
+  <% end %>
+<% end %>
+
+<label class="form-field">
+  <b class="form-field-label">Lecturer (optional)</b>
+  <input class="form-input" type="text" name="lecturer" value="<%= h @course.lecturer %>">
+  <% if @course.errors.include?("lecturer") %>
+    <% @course.errors["lecturer"].each do |error| %>
+      <p class="error"><strong>Lecturer <%= h error %></strong></p>
+    <% end %>
+  <% end %>
+</label>
+
+<label class="form-field">
+  <b class="form-field-label">Start Date (optional)</b>
+  <input class="form-input" type="date" name="start_date" min="2000-01-01" max="2049-12-31" value="<%= h @course.get_start_date("%F") %>">
+  <% if @course.errors.include?("start_date") %>
+    <% @course.errors["start_date"].each do |error| %>
+      <p class="error"><strong>Start Date <%= h error %></strong></p>
+    <% end %>
+  <% end %>
+</label>
+
+<label class="form-field">
+  <b class="form-field-label">End Date (optional)</b>
+  <input class="form-input" type="date" name="end_date" min="2000-01-01" max="2049-12-31" value="<%= h @course.get_end_date("%F") %>">
+  <% if @course.errors.include?("end_date") %>
+    <% @course.errors["end_date"].each do |error| %>
+      <p class="error"><strong>End Date <%= h error %></strong></p>
+    <% end %>
+  <% end %>
+</label>
+
+<label class="form-field">
+  <b class="form-field-label">Course Duration (minutes)</b>
+  <input class="form-input" type="number" name="duration" min="0" step="5" value="<%= h DateParse.parse_seconds_to_minutes(@course.duration) %>"/>
+  <% if @course.errors.include?("duration") %>
+    <% @course.errors["duration"].each do |error| %>
+      <p class="error"><strong>Duration <%= h error %></strong></p>
+    <% end %>
+  <% end %>
+</label>
+
+<label class="form-field">
+  <b class="form-field-label">Course Description</b>
+  <textarea class="form-input input-extension" name="description" placeholder="Type course description..."><%= h @course.description %></textarea>
+  <% if @course.errors.include?("description") %>
+    <% @course.errors["description"].each do |error| %>
+      <p class="error"><strong>Course description <%= h error %></strong></p>
+    <% end %>
+  <% end %>
+</label>
+
+<label class="form-field">
+  <b class="form-field-label">Learning Outcomes (optional)</b>
+  <textarea class="form-input input-extension" name="outcomes" placeholder="Type course outcomes..."><%= h @course.outcomes %></textarea>
+</label>
+
+<label class="form-field">
+  <b class="form-field-label">Source Website</b>
+  <input class="form-input" type="url" name="source_website" value="<%= h @course.source_website %>"/>
+  <% if @course.errors.include?("source_website") %>
+    <% @course.errors["source_website"].each do |error| %>
+      <p class="error"><strong> <%= h error %></strong></p>
+    <% end %>
+  <% end %>
+</label>
+
+<label class="form-field">
+  <b class="form-field-label">Tags (optional)</b>
+</label>
+<% if @course.errors.include?("course_tags") %>
+  <p class="error"><strong><%= h @course.errors.fetch("course_tags")[0] %></strong></p>
+<% end %>
+
+<div class="flex-container">
+  <%
+    @course_tags = CourseTag.all_tags_hash
+    unless @course_tags.nil?
+      @course_tags.each do |type, tags|
+  %>
+
+      <div id="tag_<%= h type %>-container">
+        <label for="course_tag_<%= h type %>"><%= h type.capitalize %>:</label>
+        <%= erb :'templates/checkboxes_dropdown', :locals => { :list => tags, :label => type,
+                                                               :param_name => "course_tags_#{type}",
+                                                               :checked_checkboxes => @course.tags&.split(";") } %>
+      </div>
+
+    <%
+      end
+      end
+    %>
+</div>
+
+
+<label class="form-field" for="is_public">
+  <b class="form-field-label">Is the course public?</b>
+  <select class="form-input" name="is_public" id="is_public">
+    <option value="0"
+            <% unless @course.public? %>selected
+            <% end %>>No
+    </option>
+    <option value="1"
+            <% if @course.public? %>selected
+            <% end %>>Yes
+    </option>
+  </select>
+</label>
+
+
+<label class="form-field" for="course_viewer">
+  <b class="form-field-label">Users who can see this course if it's private:</b>
+  <%= erb :'templates/checkboxes_dropdown',
+          :locals => { :list => User.order(Sequel.asc(:email)).all, :label => "user",
+                       :param_name => "course_viewer",
+                       :checked_checkboxes => CourseViewer.where(course_id: @course.id).all.map { |e| e.user_id.to_s } } %>
+</label>
+
+<div class="form-submit-section">
+  <input class="form-submit-btn" type="submit" name="submit" value="Save">
+</div>

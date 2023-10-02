@@ -1,0 +1,17 @@
+<div class="filter other-input">
+  <div class="input-icon">
+    <i class="fa-sharp fa-solid fa-tag"></i>
+    <label for="course_status">Course status:</label>
+  </div>
+  <select id="course_status" name="course_status">
+    <% status_options = @course_statuses %>
+    <% if !params['course_status'].nil? && @course_statuses.include?(params['course_status'].to_i) %>
+      <option value="<%=h params['course_status'] %>"><%=h @course_statuses.fetch(params['course_status'].to_i) %></option>
+      <% status_options = @course_statuses.select { |key, value| !key.eql?(params['course_status'].to_i) } %>
+    <% end %>
+    <option value="all">all</option>
+    <% status_options.each do |status_id, value| %>
+      <option name="<%=h value %>" value="<%=h status_id %>"><%=h value %></option>
+    <% end %>
+  </select>
+</div>

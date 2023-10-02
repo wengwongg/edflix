@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="/style/courses_list.css">
+<div class="courses-page">
+  <section class="courses-section">
+    <div id="section-container">
+      <form id="main-form" action="<%= h request.path_info %>" method="GET">
+        <%= erb :'components/forms/courses_filter_form' %>
+      </form>
+
+    <div id="courses-list">
+      <h3>Courses List</h3>
+      <% if @logged_user && @logged_user.permission?("courses.add") %><a href="/add-course" class="btn marked-btn add-course-btn">Add course</a><% end %>
+      <% unless @params['delete_id'].nil? %><h4 style="color: green">Course of id=<%=h @params['delete_id'] %> has been successfully deleted.</h4><% end %>
+
+      <% if @courses.count > 0 %>
+        <table>
+          <tr>
+            <th>Course name</th>
+            <% if @logged_user && @logged_user.permission?("courses.edit") %>
+              <th></th>
+            <% end %>
+            <% if @logged_user && @logged_user.permission?("courses.delete") %>
+              <th></th>
+            <% end %>
+            <th></th>
+          </tr>
+          <% @courses.each do |course| %>
+            <tr>
+              <td><%= h course.name %></td>
+              <% if @logged_user && @logged_user.permission?("courses.edit") %>
+                <% if @logged_user.provider?(course.provider) ||
+                  @logged_user.permission?("courses.edit.all")
+                %>
+                  <td><a href="/courses/<%= h course.id %>/edit" class="btn small-btn">Edit</a></td>
+                <% else %>
+                  <td></td>
+                <% end %>
+              <% end %>
+              <% if @logged_user && @logged_user.permission?("courses.delete") %>
+                <% if @logged_user.permission?("courses.delete.all") ||
+                  @logged_user.provider?(course.provider) %>
+                  <td>
+                    <% if course.archived? %>
+                      <form id="restore-course" action="/courses/<%= h course.id %>/restore" method="POST">
+                        <input type="button" value="Restore" onclick="confirmSubmit('restore-course',
+                          'Do you confirm restoring <%=h course.name %> course?\n' +
+                            'Course will become accessible for students!')">
+                      </form>
+                    <% else %>
+                      <form id="archive-course" action="/courses/<%= h course.id %>" method="POST">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <input type="button" value="Archive" onclick="confirmSubmit('archive-course',
+                          'Do you confirm archiving of <%=h course.name %> course?\n' +
+                            'Course will become inaccessible for students!')">
+                      </form>
+                    <% end %>
+                  </td>
+                <% else %>
+                  <td></td>
+                <% end %>
+              <% end %>
+              <td><a class="btn small-btn" href="courses/<%= h course.id %>">View</a></td>
+            </tr>
+          <% end %>
+        </table>
+
+        <%= erb :'components/pagination' %>
+      <% else %>
+        <p>No courses were found</p>
+      <% end %>
+    </div>
+  </div>
+</section>
+</div>

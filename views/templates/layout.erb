@@ -1,0 +1,37 @@
+<%
+  unless @logged_user
+    @logged_user = User.first(id: session[:id])
+    session[:id] = nil if @logged_user.nil?
+  end
+%>
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="EdFlix - An Online Course recommending system">
+    <meta name="author" content="Team 11">
+    <link rel="icon" href="/images/Edflix-logos/favicon.ico"/>
+    <link rel="stylesheet" href="/style/style.css">
+    <script src="https://kit.fontawesome.com/e8c0cde0ec.js" crossorigin="anonymous"></script>
+    <script src="/js/default.js"></script>
+    <title>EdFlix - <%=h @title %></title>
+  </head>
+  <body>
+    <% unless session[:cookies_accepted] %>
+      <div id="cookies-container"><%= erb :'templates/cookies' %></div>
+    <% end %>
+    <div id="header-container"><%= erb :'templates/header' %></div>
+    <div id="wrapper">
+      <main>
+        <div class="error-container">
+          <% unless session[:error].nil? %><h4 class="error" style="color: red">Error: <%=h session[:error] %></h4><% session[:error] = nil end %>
+          <% unless session[:info].nil? %><h4 class="info" style="color: blue">Info: <%=h session[:info] %></h4><% session[:info] = nil end %>
+        </div>
+        <%= yield %>
+      </main>
+      <%= erb :'templates/footer' %>
+    </div>
+  </body>
+</html>

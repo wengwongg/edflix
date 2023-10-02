@@ -1,0 +1,72 @@
+<section class="page-section">
+  <h2>Edit User</h2>
+
+  <form method="post">
+    <input type="hidden" name="id" value="<%= @user.id %>">
+
+    <h3>First name</h3>
+    <input type="text" name="first_name" <% if @user.get_user_info(@user.id)[0] != "null" %> value="<%= h @user.get_user_info(@user.id)[0] %>" <% end %>>
+    <% if @first_name_error %><p><%= @first_name_error %></p><% end %> 
+
+    <h3>Last name</h3>
+    <input type="text" name="last_name" <% if @user.get_user_info(@user.id)[1] != "null" %> value="<%= h @user.get_user_info(@user.id)[1] %>" <% end %>>
+    <% if @last_name_error %><p><%= @last_name_error %></p><% end %> 
+
+    <h3>Subject</h3>
+    <select id="subject" name="subject">
+      <% if @user.get_user_info(@user.id)[2] != "null" %>
+        <option value="<%= @user.get_user_info(@user.id)[2] %>"><%= h @subject.convert_subject_id(@user.get_user_info(@user.id)[2]) %></option>
+      <% end %>
+      <% @subjects.each do |subject| %>
+        <% if @user.get_user_info(@user.id)[2] != "null" %>
+          <% next if (subject.id == @user.get_user_info(@user.id)[2]) %>
+        <% end %>
+        <option value="<%=h subject.id %>"><%=h subject.name %></option>
+      <% end %>
+    </select>
+
+    <h3>Year of Study</h3>
+    <input type="number" name="year_of_study" value="<%= h @user.get_user_info(@user.id)[3] %>">
+    <% if @year_of_study_error %><p><%= @year_of_study_error %></p><% end %>
+
+    <h3>Email</h3>
+    <input type="text" name="email" value="<%= h @user.email %>">
+    <% if @email_error %><p><%= @email_error %></p><% end %>
+
+    <h3>Roles</h3>
+    <% @roles.each do |role| %>
+      <input type="checkbox" id="role<%=h role.id %>" name="role<%= role.id %>" value="<%=h role.id %>"
+        <% if (@user.fetch_permissions && (@user.user_roles).include?(role)) %>checked<% end %>>
+      <label for="role<%=h role.id %>"><%= h role.name.capitalize() %></label><br>
+    <% end %>
+    <% if @roles_error %><p><%= @roles_error %></p><% end %>
+
+    <% if @user.role_provider? %>
+      <h3>Providers</h3>
+      <%= erb :'templates/checkboxes_dropdown',
+              :locals => { :list => Provider.all, :label => "provider",
+                           :param_name => "provider",
+                           :checked_checkboxes => @user.providers&.map { |provider| provider.id.to_s } } %>
+      <% if @provider_error %><p><%=h @provider_error %></p><% end %>
+    <% end %>
+
+    <br>
+    <input name="submit_info" type="submit" value="Submit">
+  </form>
+
+  <% if @success %>
+    <p><%= @success %></p>
+  <% end %>
+
+  <br>
+
+  <div class="delete_form">
+    <h3>Delete user data</h3>
+    <form method="post" action="/delete-user">
+      <input type="hidden" name="id" value="<%= @user.id %>">
+      <input type="submit" value="Delete">
+    </form>
+  </div>
+
+  <p>Return to <a href="/user-list">list of users</a>.</p>
+</section>

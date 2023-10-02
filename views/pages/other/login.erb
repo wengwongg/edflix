@@ -1,0 +1,27 @@
+<section class="page-section">
+		<h1 class="page-title">Login</h1>
+		<div class="page-inner-section">
+			<form class="general-form" method="post" action="/login">
+				<label class="form-field" for="email" >
+					<b class="form-field-label">Email</b>
+					<input id="email" class="form-input" type="text" name="email" required>
+				</label>
+				<label class="form-field" for="password">
+					<b class="form-field-label">Password</b>
+					<input id="password" class="form-input" type="password" name="password" required>
+				</label>
+
+				<a class="form-link" href="/forgot-password">Forgot your password?</a>
+
+				<div class="form-submit-section">
+					<button class="form-submit-btn" type="submit" name="login">Login</button>
+				</div>
+			</form>
+
+			<% if @email_error %>
+				<br/><strong class="error"><%=h @email_error%></strong>
+			<% elsif @password_error %>
+				<br/><strong class="error"><%=h @password_error %></strong>
+			<% end %>
+		</div>
+</section>

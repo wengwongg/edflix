@@ -1,0 +1,195 @@
+<section class="page-section">
+  <h1>Report Page</h1>
+  <h2>Courses report</h2>
+
+  <div class="navigation">
+    <form>
+      <p>Enter a course name to filter the report:
+      <input type="text" name="course_search" value="<%= h @course_search %>"/>
+      <input type="submit" value="Submit" /></p>
+    </form>
+
+    <p><a href="/courses">Return to course list page to edit</a>.</p>
+  </div>
+
+
+  <h4>Total number of course/s : <%= h @courses.count %></h4>
+
+  <%arraySubj1=Array.new()%>
+  <%arraySubj2=Array.new()%>
+  <%arraySubj3=Array.new()%>
+
+  <h4>Total number of course/s : <%= h @courses.count %></h4>
+
+  <% if @courses.count > 0%>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Connection Link</th>
+        <th>Hit Count</th>
+        <th>Public ?</th>
+        <th>More Information</th>
+      </tr>
+    <% @courses.each do |course| %>
+      <tr>
+
+      <%subj = course.subject%>
+      <%case when subj == 1 then arraySubj1.append(course.id)%>
+      <%when subj == 2 then arraySubj2.append(course.id)%>
+      <%when subj == 3 then arraySubj3.append(course.id)%>
+      <%end%>
+
+        <td><%= h course.name %></td>
+        <td><%= h course.id %></td>
+        <td><%= h course.get_start_date("%d %B %Y") %></td>
+        <td><%= h course.source_website %></td>
+        <td><%= h course.signups %></td>
+        <%if course.public? %>
+          <td>Yes</td>
+        <%else%>
+          <td>No</td>
+        <%end%>
+        <td><a href="/courses/<%= h course.id %>">Details</a></td>
+      </tr>
+    <% end %>
+    </table>
+  <% else %>
+    <p>There is no registered course matched the filter/s. Try again with different name/s</p>
+  <% end %>
+
+  <br>
+  <br>
+
+  <h2>Overall Subjects</h2>
+
+  <table style="width:100%;">
+                <tr>
+                  <th>Subjects</th>
+                  <th>Number of Courses Affliated</th>
+                </tr>
+                <tr>
+                <%#----------------------------%>
+                <% if @courses.count > 0%>
+                    <%valueCS = (arraySubj1.count*100/@courses.count).to_i%>
+                    <%valueQuantum = (arraySubj2.count*100/@courses.count).to_i%>
+                    <%valueBiology = (arraySubj3.count*100/@courses.count).to_i%>
+                <%end%>
+                <%#------------------------%>
+                  <td>Comp. Sc</td>
+                  <td>
+                    <div style="background-color:lightblue; width:<%= h valueCS%>%; border: 3px solid black; text-align: center;">
+                      <%= h valueCS %>% / <%=arraySubj1.count%> courses
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Quantum</td>
+                  <td>
+                    <div style="background-color:purple; width:<%= h valueQuantum%>%; border: 3px solid black; text-align: center;">
+                      <%= h valueQuantum %>% / <%=arraySubj2.count%> courses
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Biology</td>
+                  <td>
+                    <div style="background-color:pink; width:<%= h valueBiology%>%; border: 3px solid black; text-align: center;">
+                      <%= h valueBiology %>% / <%=arraySubj3.count%> courses
+                    </div>
+                  </td>
+                </tr>
+  </table>
+
+
+  <br>
+  <br>
+
+  <h2>Users report</h2>
+  <h4>Total number of users : <%= h @users.count %></h4>
+  <%#Number of array depends on the finalise number of roles later%>
+  <%arrayStudent=Array.new()%>
+  <%arrayAdmin=Array.new()%>
+  <%arrayManager=Array.new()%>
+  <%arrayProvider=Array.new()%>
+
+  <%@users.each do |currUser|%>
+    <%case when currUser.student? then arrayStudent.append(currUser)%>
+    <%when currUser.admin? then arrayAdmin.append(currUser)%>
+    <%when currUser.manager? then arrayManager.append(currUser)%>
+    <%end%>
+  <%end%>
+
+  <h4>Number of Students to their year Study</h4>
+  <table style="width:100%;">
+                <tr>
+                  <th>Year</th>
+                  <th>Number of students enrolled</th>
+                </tr>
+                <%#----------------------------%>
+                <% if @students.count > 0%>
+                    <%value1stYear = (@student1styear.count*100/@students.count).to_i%>
+                    <%value2ndYear = (@student2ndyear.count*100/@students.count).to_i%>
+                    <%value3rdYear = (@student3rdyear.count*100/@students.count).to_i%>
+                <%end%>
+                <%#------------------------%>
+                <tr>
+                  <td style="width:70px;">1st Year</td>
+                  <td>
+                    <div style="background-color:lightblue; width:<%= h value1stYear%>%; border: 3px solid black; text-align: center;">
+                      <p><%= h value1stYear %>% / <%=@student1styear.count%> users</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2nd Year</td>
+                  <td>
+                    <div style="background-color:purple; width:<%= h value2ndYear%>%; border: 3px solid black; text-align: center;">
+                      <%= h value2ndYear %>% / <%= h @student2ndyear.count%> users
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3rd year</td>
+                  <td>
+                    <div style="background-color:pink; width:<%= h value3rdYear%>%; border: 3px solid black; text-align: center;">
+                      <%= h value3rdYear %>% / <%= h @student3rdyear.count%> users
+                    </div>
+                  </td>
+                </tr>
+  </table>
+
+    <h4>Number of Users Registered (Excluding Providers)</h4>
+    <div style="display: inline-block; ">
+        <ul>
+          <li>Students Enrolled : <%= h arrayStudent.count%></li>
+          <li>Administrators : <%= h arrayAdmin.count%></li>
+          <li>Manager : <%= h arrayManager.count%></li>
+        </ul>
+    </div>
+
+
+
+  <h2>List of Providers At The Moment</h2>
+
+  <h4>Total number of provider/s : <%= h @providers.count %></h4>
+  <%idProvider=1%>
+  <% if @providers.count > 0 %>
+    <table>
+      <tr>
+        <th>Providers</th>
+        <th>Number of course provided</th>
+      </tr>
+    <% @providers.each do |index| %>
+      <tr>
+        <td><%= h index.get_name%></td>
+        <td><%= h Course.get_courses_providers(idProvider).count%></td>
+        <%idProvider+=1%>
+      </tr>
+    <% end %>
+    </table>
+  <% else %>
+    <p>There is no registered providers at the moment
+  <% end %>
+</section>

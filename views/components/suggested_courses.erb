@@ -1,0 +1,20 @@
+<div id="<%= h section_name %>">
+
+  <h4><%= h displayed_name %></h4>
+  <% if !courses_list.nil? && !courses_list.empty? %>
+    <table>
+      <tr>
+        <th>Course name</th>
+        <th></th>
+      </tr>
+      <% courses_list.each do |course| %>
+        <tr>
+          <td><%= h course.name %></td>
+          <td><a href="courses/<%= h course.id %>">View details</a></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>List is empty...</p>
+  <% end %>
+</div>

@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="/style/courses_list.css">
+<div class="courses-page">
+  <section class="courses-section">
+    <div id="section-container">
+      <form id="main-form" action="<%= h request.path_info %>" method="GET">
+        <%= erb :'components/forms/courses_filter_form' %>
+      </form>
+
+      <div id="courses-list">
+        <h3>Courses Dashboard</h3>
+
+        <% if @student_courses_hash.length > 0 %>
+          <table>
+            <tr>
+              <th>Course name</th>
+              <th>Enroll date</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+            <% @student_courses_hash.each do |student_course, course| %>
+              <tr>
+                <td><%= h course.name %></td>
+                <td><%= h DateParse.parse_unix_to_date(student_course.enroll_date, "%F") %></td>
+                <td><%= h @course_statuses.fetch(student_course.status) %></td>
+                <td><a class="btn small-btn" href="courses/<%= h course.id %>">View</a></td>
+              </tr>
+            <% end %>
+          </table>
+
+          <%= erb :'components/pagination' %>
+        <% else %>
+          <p>Your courses history is empty.</p>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>

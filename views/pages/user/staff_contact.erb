@@ -1,0 +1,44 @@
+<section class="page-section">
+  <h1 class="page-title">Contact Our Staff</h1>
+  <div class="page-inner-section">
+
+
+    <form class="general-form" method="post" action="/staff-contact">
+      <label class="form-field" for="name">
+        <b class="form-field-label">Name</b>
+        <input id="name" class="form-input" type="text" name="name" value="<%= @name %>" required>
+      </label>
+      <% if @name_error %>
+        <br /><strong class="error"><%= @name_error %></strong>
+      <% end %>
+
+      <label class="form-field" for="email" >
+        <b class="form-field-label">Email</b>
+        <input id="email" class="form-input" type="email" name="email" value="<%= @email %>" required>
+      </label>
+      <% if @email_error %>
+        <br /><strong class="error"><%= @email_error %></strong>
+      <% end %>
+
+      <label class="form-field" for="text" >
+        <b class="form-field-label">Message</b>
+        <textarea id="text" class="form-input input-extension" name="text" required></textarea>
+      </label>
+      <% if @text_error %>
+        <br /><strong class="error"><%= @text_error %></strong>
+      <% end %>
+
+      <% if @form_was_submitted %>
+        <% if @submission_error %>
+          <p><strong class="error">Please correct the errors below</strong></p>
+        <% else %>
+          <p><strong class="success">Success!</strong></p>
+        <% end %>
+      <% end %>
+
+      <div class="form-submit-section">
+        <button class="form-submit-btn" type="submit" name="submit">Send Message</button>
+      </div>
+    </form>
+  </div>
+</section>

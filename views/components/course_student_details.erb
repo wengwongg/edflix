@@ -1,0 +1,53 @@
+<% if @student_course %>
+  <div id="student-info">
+    <h4>Your course details</h4>
+    <table class="course-details">
+        <tr>
+          <th>Status</th>
+          <td><% if !@course_status %>None<% else %><%=h @course_statuses.fetch(@course_status) %><% end %></td>
+        </tr>
+      
+      <% unless @student_course.enroll_date.nil? %>
+        <tr>
+          <th>Enroll date</th>
+          <td class="date"><%=h DateParse.parse_unix_to_date(@student_course.enroll_date, "%-d %B %Y") %></td>
+        </tr>
+      <% end %>
+
+      <% unless @student_course.pause_date.nil? %>
+        <tr>
+          <% if @course_status.eql?(1) %>
+            <th>Last resume date</th>
+          <% else %>
+            <th>Last pause date</th>
+          <% end %>
+          <td class="date"><%=h DateParse.parse_unix_to_date(@student_course.pause_date, "%-d %B %Y") %></td>
+        </tr>
+      <% end %>
+
+      <% unless @student_course.finish_date.nil? %>
+        <tr>
+          <th>Completion date</th>
+          <td class="date"><%=h DateParse.parse_unix_to_date(@student_course.finish_date, "%-d %B %Y") %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+
+<div id="student-interact">
+  <h4>Available actions</h4>
+  <div class="course-actions">
+    <% if @course_status && !@course_status.eql?(3) %>
+      <a class="btn action-btn" href="<%=h request.path_info %>/finish">Complete</a>
+      <% if @course_status.eql?(1) %>
+        <a class="btn action-btn" href="<%=h request.path_info %>/pause">Pause</a>
+      <% else %>
+        <a class="btn action-btn" href="<%=h request.path_info %>/resume">Resume</a>
+      <% end %>
+      <a class="btn action-btn" href="<%=h request.path_info %>/cancel">Cancel</a>
+    <% else %>
+      <a class="btn action-btn" href="<%=h request.path_info %>/enroll">Enroll</a>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="/style/courses_list.css">
+<div class="courses-page">
+  <section class="courses-section">
+    <div id="section-container">
+
+      <div id="courses-list">
+        <h3>Liked Courses</h3>
+        <% if !@pagination.paginated_array.empty? %>
+          <table>
+            <tr>
+              <th>Course name</th>
+              <th></th>
+            </tr>
+            <% @pagination.paginated_array.each do |course| %>
+              <tr>
+                <td><%= h course.name %></td>
+                <td><a class="btn small-btn" href="courses/<%= h course.id %>">View</a></td>
+              </tr>
+            <% end %>
+          </table>
+          <form id="main-form">
+            <%= erb :'components/pagination' %>
+          </form>
+        <% else %>
+          <p>You have no liked courses.</p>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>

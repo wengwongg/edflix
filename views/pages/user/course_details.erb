@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="/style/course_details.css">
+<div class="courses-page">
+  <section class="courses-section">
+    <h3><%= h @course.name %></h3>
+    <div class="flex-container">
+      <div id="left-container">
+        <div id="details">
+          <h4>Course details</h4>
+          <table class="course-details">
+            <tr>
+              <th>Subject</th>
+              <td>
+                <% if @course_subject %><%= h @course_subject.name %>
+                <% else %>None
+                <% end %></td>
+            </tr>
+            <% unless @course.provider.nil? %>
+              <tr>
+                <th>Provider</th>
+                <td><%= h Provider.first(id: @course.provider)&.name %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <th>Lecturer</th>
+              <td>
+                <% if @course.lecturer.eql?("") %>No specified
+                  <% else %><%= h @course.lecturer %>
+                <% end %></td>
+            </tr>
+            <tr>
+              <th>Source</th>
+              <td><a href="<%= h @course.source_website %>"><%= h @course.source_website %></a></td>
+            </tr>
+            <tr>
+              <th>Description</th>
+              <td>
+                <% @course.description.split(/\n/).each do |descript| %>
+                  <%= h descript %><br>
+                <% end %></td>
+            </tr>
+            <tr>
+              <th>Duration</th>
+              <td><%= h DateParse.parse_seconds_to_words(@course.duration) %></td>
+            </tr>
+            <% if @course.outcomes && !@course.outcomes.eql?("") %>
+              <tr>
+                <th>Outcomes</th>
+                <td>
+                  <% @course.outcomes.split(/\n/).each do |outcome| %>
+                    <%= h outcome %><br>
+                  <% end %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <th>Total sign ups</th>
+              <td><%= h @course.signups %></td>
+            </tr>
+            <% if @course.get_start_date("%-d %B %Y") %>
+              <tr>
+                <th>Start date</th>
+                <td class="date"><%= h @course.get_start_date("%-d %B %Y") %></td>
+              </tr>
+            <% end %>
+            <% if @course.get_end_date("%-d %B %Y") %>
+              <tr>
+                <th>End date</th>
+                <td class="date"><%= h @course.get_end_date("%-d %B %Y") %></td>
+              </tr>
+            <% end %>
+          </table>
+          <% if @liked_course_exists %>
+            <form action="/courses/ <%= h @course.id %>/dislike" method="post">
+              <input type="submit" value="Dislike Course">
+            </form>
+          <% else %>
+            <form action="/courses/<%= h @course.id %>/like" method="post">
+              <input type="submit" value="Like Course">
+            </form>
+          <% end %>
+        </div>
+
+        <% if @logged_user && @logged_user.student? %>
+          <%= erb :'components/course_student_details' %>
+        <% end %>
+      </div>
+
+      <div id="right-container">
+        <%= erb :'components/course_reviews' %>
+      </div>
+    </div>
+
+    <script>
+        function setStars(number) {
+            let j = 5;
+            for (let i = 1; i <= number; i++) {
+                document.getElementById("review-star-" + i.toString()).classList.add('checked')
+            }
+            for (j; j > number; j--) {
+                document.getElementById("review-star-" + j.toString()).classList.remove('checked')
+            }
+        }
+    </script>
+  </section>
+</div>

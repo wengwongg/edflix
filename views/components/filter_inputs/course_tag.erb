@@ -1,0 +1,19 @@
+<%
+  course_tags = CourseTag.all_tags_hash
+  unless course_tags.nil?
+    course_tags.each do |type, tags|
+      next if tags.nil? || !tags.is_a?(Array) || tags.empty? || (tags.length.eql?(1) && tags.fetch(0).name.nil?)
+%>
+      <div class="filter other-input">
+        <div class="input-icon">
+          <i class="fa-sharp fa-solid fa-tag"></i>
+          <label for="course_tag_<%=h type %>"><%=h type.capitalize %>:</label>
+        </div>
+        <%= erb :'templates/checkboxes_dropdown', :locals => { :list => tags, :label => type,
+                                                               :param_name => "course_tags_#{type}",
+                                                               :checked_checkboxes => params&.fetch("course_tags_#{type}", nil)} %>
+      </div>
+<%
+    end
+  end
+%>

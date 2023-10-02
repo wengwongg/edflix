@@ -1,0 +1,21 @@
+<div class="courses-page">
+  <section class="courses-section">
+  <h2>Suggest a course</h2>
+
+  <form method="post">
+    <h3>Name of the course</h3>
+    <input type="text" name="course_name" value="<%= h @course_name %>" size="30">
+    <% if @course_name_error %><%= @course_name_error %><% end %>
+
+    <h3>URL of the course page</h3>
+    <input type="text" name="course_url" value="<%= h @course_url %>" size="40">
+    <% if @course_url_error %><%= @course_url_error %><% end %>
+    
+    <br><br>
+    
+    <input type="submit" name="submit_course" value="Submit">
+    <% if @suggestion_message %><%= @suggestion_message %><% end %>
+
+  </form>
+</section>
+</div>

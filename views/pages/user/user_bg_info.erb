@@ -1,0 +1,54 @@
+<section id="user-bg-info" class="page-section">
+  <h2 class="page-title">User Information</h2>
+  <div class="page-inner-section">
+    <% unless @roles.nil? %>
+    <div class="role-div">
+      <h4>Your roles: <%=h @roles&.map { |role| role.name.capitalize }.join(" | ") %></h4>
+    </div>
+    <% end %>
+    <form class="general-form" method="post" action="/user_bg_info">
+      <label class="form-field" for="first_name" >
+        <b class="form-field-label">First Name</b>
+        <input class="form-input" type="text" id="first_name" name="first_name" value="<%= h @first_name %>" required>
+      </label>
+      <% if @first_name_error %>
+        <br/><strong class="error"><%=h @first_name_error %></strong>
+      <% end %>
+
+      <label class="form-field" for="last_name">
+        <b class="form-field-label">Last Name</b>
+        <input class="form-input" type="text" id="last_name" name="last_name" value="<%= h @last_name %>" required>
+      </label>
+      <% if @last_name_error %>
+        <br/><strong class="error"><%=h @last_name_error %></strong>
+      <% end %>
+
+      <% if @logged_user&.student? %>
+        <label class="form-field" for="year_of_study">
+          <b class="form-field-label">Year of Study</b>
+          <input class="form-input" type="number" id="year_of_study" name="year_of_study" value="<%= h @year_of_study %>" required>
+        </label>
+        <% if @year_of_study_error %>
+          <br/><strong class="error"><%=h @year_of_study_error %></strong>
+        <% end %>
+
+      <label class="form-field" for="subject">
+        <b class="form-field-label">Subject</b>
+        <select class="form-input" id="subject" name="subject">
+          <option value="" selected disabled>Choose a subject</option>
+          <% Subject.all.each do |subject| %>
+            <option value="<%=h subject.id %>" <% if subject.id.eql?(@subject) %>selected<% end %>><%=h subject.name %></option>
+          <% end %>
+        </select>
+      </label>
+      <% if @subject_error %>
+        <br/><strong class="error"><%=h @subject_error %></strong>
+      <% end %>
+      <%end %>
+
+      <div class="form-submit-section">
+        <button class="form-submit-btn" type="submit" name="submit_bg_info">Update Details</button>
+      </div>
+    </form>
+  </div>
+</section>

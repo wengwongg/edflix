@@ -1,0 +1,66 @@
+<section class="page-section">
+  <h2 class="page-title">Login Details</h2>
+  <a class="form-link" href="/user_bg_info">Want to change personal details? Click here.</a>
+
+  <h2 class="page-subtitle">Email Address</h2>
+  <form class="general-form" method="post">
+    <label class="form-field" for="email" >
+      <b class="form-field-label">New Email</b>
+      <input id="email" class="form-input" type="email" name="email_change" value="<%= h @email %>" required>
+    </label>
+    <label class="form-field" for="email-confirmation" >
+      <b class="form-field-label">Confirm Email</b>
+      <input id="email-confirmation" class="form-input" name="email_change_confirmation" type="email" value="<%= h @email_conf %>" required>
+    </label>
+
+    <% if @email_error %>
+      <p class="error"><%= @email_error %></p>
+    <% end %>
+
+    <% if @email_success %>
+      <p class="success"><%= @email_success %></p>
+    <% end %>
+
+    <div class="form-submit-section">
+      <button class="form-submit-btn" type="submit" name="submit-email">Change Email Address</button>
+    </div>
+  </form>
+
+  <div class="multi-form">
+    <h2 class="page-subtitle">Password</h2>
+    <form class="general-form" method="post">
+      <label class="form-field" for="password" >
+        <b class="form-field-label">New Password</b>
+        <input id="password" class="form-input" type="password" name="password_change" value="<%= h @password %>" required>
+      </label>
+      <label class="form-field" for="password-confirmation" >
+        <b class="form-field-label">Confirm Password</b>
+        <input id="password-confirmation" class="form-input" name="password_change_confirmation" type="password" value="<%= h @password_conf %>" required>
+      </label>
+
+      <% if @password_error %>
+        <p class="error"><%= @password_error %></p>
+      <% end %>
+
+      <% if @password_success %>
+        <p class="success"><%= @password_success %></p>
+      <% end %>
+
+      <div class="form-submit-section">
+        <button class="form-submit-btn" type="submit" name="submit-password">Change Password</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="multi-form">
+    <h2 class="page-subtitle">Deletion</h2>
+    <form id="delete-account" class="general-form" method="post">
+      <input type="hidden" name="form_type" value="delete-account-form">
+      <div class="form-submit-section">
+        <input class="form-submit-btn" type="button" value="Delete My Account" onclick="confirmSubmit('delete-account', 
+          'Do you confirm deleting your account?')">
+      </div>
+    </form>
+  </div>
+
+</section>

@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="/style/course_details.css">
+<div class="courses-page">
+  <section class="courses-section">
+  <h2>Manage trusted providers</h2>
+  <div class="flex-container">
+    <div id="left-container">
+      <% if @logged_user && (@logged_user.permission?("providers.create") || @logged_user.permission?("providers.edit")) %>
+        <div id="providers-manage">
+          <%= erb :'/components/forms/courses_manage_form',
+                  :locals => { :object_name => "provider",
+                               :name_displayed => "provider",
+                               :objects_list => Provider.all,
+                               :create_perm => "providers.create",
+                               :edit_perm => "providers.edit",
+                               :delete_perm => "providers.delete",
+                               :delete_message => "Do you want to delete a provider? It will cause all users associated" +
+                                 "with this provider to lose access to their courses." +
+                                 "And their courses will not be trusted anymore" } %>
+        </div>
+      <% end %>
+    </div>
+
+
+  </div>
+</section>
+</div>
